@@ -49,6 +49,7 @@ terraform-oci-fk-drg/
 ├── examples/
 │   ├── 01-basic-drg-vcn-attachment/
 │   ├── 02-cross-region-drg-remote-peering/
+│   ├── 03-drg-hub-spoke-transit-routing/
 │   └── README.md
 ├── main.tf
 ├── variables.tf
@@ -66,7 +67,7 @@ All examples are runnable and demonstrate how DRG-based connectivity composes wi
 
 ```hcl
 module "drg" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.2.0"
+  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.3.0"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-demo"
@@ -179,6 +180,7 @@ rpc_attachment_managements = map(object({
 |-------|-------------|
 | `01-basic-drg-vcn-attachment` | A reusable OCI VCN attached to a DRG, establishing the DRG foundation for later remote and transit connectivity examples |
 | `02-cross-region-drg-remote-peering` | Two VCNs in different OCI regions connected through two DRGs and RPC-based remote peering |
+| `03-drg-hub-spoke-transit-routing` | Three VCNs attached to one DRG, using DRG route tables to provide OCI-native hub-and-spoke transit routing |
 
 See [`examples/`](examples) for details.
 

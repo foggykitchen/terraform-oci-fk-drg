@@ -13,6 +13,7 @@ These examples are part of the **[FoggyKitchen.com training ecosystem](https://f
 |:-------:|:------|:-----------|
 | 01 | **Basic DRG VCN Attachment** | one VCN, one DRG, VCN attachment, DRG route table composition, `terraform-oci-fk-vcn` integration |
 | 02 | **Cross-Region DRG Remote Peering** | two VCNs, two DRGs, two regions, RPC peering, VCN route tables, DRG route tables, `terraform-oci-fk-vcn` integration |
+| 03 | **DRG Hub-and-Spoke Transit Routing** | three VCNs, one DRG, multiple attachments, spoke-to-spoke transit, DRG route tables, OCI-native hub-and-spoke |
 
 ---
 
@@ -37,6 +38,16 @@ To run the cross-region DRG remote peering example:
 
 ```bash
 cd examples/02-cross-region-drg-remote-peering
+cp terraform.tfvars.example terraform.tfvars
+tofu init
+tofu plan
+tofu apply
+```
+
+To run the DRG hub-and-spoke transit routing example:
+
+```bash
+cd examples/03-drg-hub-spoke-transit-routing
 cp terraform.tfvars.example terraform.tfvars
 tofu init
 tofu plan
