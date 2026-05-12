@@ -19,9 +19,10 @@ resource "oci_core_drg" "this" {
 resource "oci_core_drg_attachment" "this" {
   for_each = var.vcn_attachments
 
-  drg_id       = oci_core_drg.this.id
-  vcn_id       = each.value.vcn_id
-  display_name = coalesce(try(each.value.display_name, null), "${var.name}-${each.key}-attachment")
+  drg_id             = oci_core_drg.this.id
+  vcn_id             = each.value.vcn_id
+  drg_route_table_id = try(each.value.drg_route_table_key, null) != null ? oci_core_drg_route_table.this[each.value.drg_route_table_key].id : null
+  display_name       = coalesce(try(each.value.display_name, null), "${var.name}-${each.key}-attachment")
 
   defined_tags  = var.defined_tags
   freeform_tags = var.freeform_tags

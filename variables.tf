@@ -29,8 +29,9 @@ variable "freeform_tags" {
 variable "vcn_attachments" {
   description = "Map of VCN attachments to create on the DRG."
   type = map(object({
-    vcn_id       = string
-    display_name = optional(string)
+    vcn_id              = string
+    display_name        = optional(string)
+    drg_route_table_key = optional(string)
   }))
   default = {}
 }

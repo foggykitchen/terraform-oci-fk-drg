@@ -28,6 +28,7 @@ The module creates:
 - Optional DRG route tables
 - Optional DRG route table route rules
 - Optional RPC attachment management resources
+- Optional VCN attachment to DRG route table associations
 
 The module intentionally does **not** create:
 - VCNs
@@ -47,6 +48,7 @@ Each of those concerns belongs in its own dedicated module or composition layer.
 terraform-oci-fk-drg/
 ├── examples/
 │   ├── 01-basic-drg-vcn-attachment/
+│   ├── 02-cross-region-drg-remote-peering/
 │   └── README.md
 ├── main.tf
 ├── variables.tf
@@ -64,14 +66,21 @@ All examples are runnable and demonstrate how DRG-based connectivity composes wi
 
 ```hcl
 module "drg" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.1.0"
+  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.2.0"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-demo"
 
   vcn_attachments = {
     app = {
-      vcn_id = module.vcn.vcn_id
+      vcn_id              = module.vcn.vcn_id
+      drg_route_table_key = "from-vcn"
+    }
+  }
+
+  drg_route_tables = {
+    from-vcn = {
+      route_rules = []
     }
   }
 }
@@ -106,8 +115,9 @@ In a complete deployment, VCN route tables should usually reference the DRG thro
 
 ```hcl
 vcn_attachments = map(object({
-  vcn_id       = string
-  display_name = optional(string)
+  vcn_id              = string
+  display_name        = optional(string)
+  drg_route_table_key = optional(string)
 }))
 ```
 
@@ -168,6 +178,7 @@ rpc_attachment_managements = map(object({
 | Example | Description |
 |-------|-------------|
 | `01-basic-drg-vcn-attachment` | A reusable OCI VCN attached to a DRG, establishing the DRG foundation for later remote and transit connectivity examples |
+| `02-cross-region-drg-remote-peering` | Two VCNs in different OCI regions connected through two DRGs and RPC-based remote peering |
 
 See [`examples/`](examples) for details.
 

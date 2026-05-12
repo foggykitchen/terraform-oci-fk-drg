@@ -12,6 +12,7 @@ These examples are part of the **[FoggyKitchen.com training ecosystem](https://f
 | Example | Title | Key Topics |
 |:-------:|:------|:-----------|
 | 01 | **Basic DRG VCN Attachment** | one VCN, one DRG, VCN attachment, DRG route table composition, `terraform-oci-fk-vcn` integration |
+| 02 | **Cross-Region DRG Remote Peering** | two VCNs, two DRGs, two regions, RPC peering, VCN route tables, DRG route tables, `terraform-oci-fk-vcn` integration |
 
 ---
 
@@ -26,6 +27,16 @@ To run the basic DRG VCN attachment example:
 
 ```bash
 cd examples/01-basic-drg-vcn-attachment
+cp terraform.tfvars.example terraform.tfvars
+tofu init
+tofu plan
+tofu apply
+```
+
+To run the cross-region DRG remote peering example:
+
+```bash
+cd examples/02-cross-region-drg-remote-peering
 cp terraform.tfvars.example terraform.tfvars
 tofu init
 tofu plan
