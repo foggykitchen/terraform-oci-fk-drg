@@ -4,6 +4,8 @@ In this example, we deploy a **Hub-and-Spoke network topology** in Oracle Cloud 
 
 This is the natural next step after the single-attachment and cross-region examples. It shows the "DRG2" style design where one DRG serves multiple VCN attachments and performs spoke-to-spoke routing without a router VM.
 
+In this example, the hub role is focused on **transit routing topology** rather than on hosting distinct shared services. The main goal is to show how one DRG can become the central routing point for multiple attached VCNs.
+
 ---
 
 ## 🧭 Architecture Overview
@@ -35,6 +37,8 @@ With this design:
 - `spoke1` can reach `spoke2` through the DRG
 - `spoke2` can reach `spoke1` through the DRG
 - no compute-based forwarding appliance is required
+
+At this stage, the hub is primarily a **routing hub**, not yet a separate shared-services or inspection layer.
 
 ---
 
