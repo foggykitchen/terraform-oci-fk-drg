@@ -6,6 +6,14 @@ locals {
       })
     }
   ]...)
+
+  route_distribution_statements = length(var.drg_route_distributions) == 0 ? {} : merge([
+    for distribution_key, distribution in var.drg_route_distributions : {
+      for idx, statement in try(distribution.statements, []) : "${distribution_key}-${idx}" => merge(statement, {
+        drg_route_distribution_key = distribution_key
+      })
+    }
+  ]...)
 }
 
 resource "oci_core_drg" "this" {
@@ -44,11 +52,36 @@ resource "oci_core_remote_peering_connection" "this" {
 resource "oci_core_drg_route_table" "this" {
   for_each = var.drg_route_tables
 
-  drg_id       = oci_core_drg.this.id
-  display_name = coalesce(try(each.value.display_name, null), "${var.name}-${each.key}")
+  drg_id                           = oci_core_drg.this.id
+  display_name                     = coalesce(try(each.value.display_name, null), "${var.name}-${each.key}")
+  import_drg_route_distribution_id = try(each.value.import_drg_route_distribution_key, null) != null ? oci_core_drg_route_distribution.this[each.value.import_drg_route_distribution_key].id : null
 
   defined_tags  = var.defined_tags
   freeform_tags = var.freeform_tags
+}
+
+resource "oci_core_drg_route_distribution" "this" {
+  for_each = var.drg_route_distributions
+
+  drg_id            = oci_core_drg.this.id
+  distribution_type = each.value.distribution_type
+  display_name      = coalesce(try(each.value.display_name, null), "${var.name}-${each.key}")
+}
+
+resource "oci_core_drg_route_distribution_statement" "this" {
+  for_each = local.route_distribution_statements
+
+  drg_route_distribution_id = oci_core_drg_route_distribution.this[each.value.drg_route_distribution_key].id
+  action                    = each.value.action
+  priority                  = each.value.priority
+
+  dynamic "match_criteria" {
+    for_each = try(each.value.match_criteria, [])
+    content {
+      match_type      = match_criteria.value.match_type
+      attachment_type = try(match_criteria.value.attachment_type, null)
+    }
+  }
 }
 
 resource "oci_core_drg_attachment_management" "rpc" {
@@ -60,6 +93,26 @@ resource "oci_core_drg_attachment_management" "rpc" {
   network_id         = oci_core_remote_peering_connection.this[each.value.rpc_key].id
   drg_id             = oci_core_drg.this.id
   drg_route_table_id = oci_core_drg_route_table.this[each.value.drg_route_table_key].id
+}
+
+resource "oci_core_default_route_table" "this" {
+  for_each = var.default_route_table_managements
+
+  manage_default_resource_id = each.value.manage_default_resource_id
+  compartment_id             = coalesce(try(each.value.compartment_ocid, null), var.compartment_ocid)
+  display_name               = coalesce(try(each.value.display_name, null), "${var.name}-${each.key}")
+
+  dynamic "route_rules" {
+    for_each = try(each.value.route_rules, [])
+    content {
+      description      = try(route_rules.value.description, null)
+      destination      = route_rules.value.destination
+      destination_type = try(route_rules.value.destination_type, "CIDR_BLOCK")
+      network_entity_id = try(route_rules.value.network_entity_id, null) != null ? route_rules.value.network_entity_id : (
+        try(route_rules.value.network_entity_key, null) == "drg" ? oci_core_drg.this.id : null
+      )
+    }
+  }
 }
 
 resource "oci_core_drg_route_table_route_rule" "this" {

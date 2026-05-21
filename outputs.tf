@@ -22,6 +22,13 @@ output "drg_route_table_ids" {
   }
 }
 
+output "drg_route_distribution_ids" {
+  description = "Map of DRG route distribution keys to DRG route distribution OCIDs."
+  value = {
+    for key, distribution in oci_core_drg_route_distribution.this : key => distribution.id
+  }
+}
+
 output "remote_peering_connection_ids" {
   description = "Map of RPC keys to Remote Peering Connection OCIDs."
   value = {

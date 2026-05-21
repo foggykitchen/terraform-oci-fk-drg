@@ -26,8 +26,11 @@ The module creates:
 - Optional VCN attachments
 - Optional Remote Peering Connections (RPCs)
 - Optional DRG route tables
+- Optional DRG route distributions
+- Optional DRG route distribution statements
 - Optional DRG route table route rules
 - Optional RPC attachment management resources
+- Optional default VCN route table management resources
 - Optional VCN attachment to DRG route table associations
 
 The module intentionally does **not** create:
@@ -110,7 +113,9 @@ In a complete deployment, VCN route tables should usually reference the DRG thro
 | `vcn_attachments` | `map(object)` | ❌ | VCN attachments to create on the DRG |
 | `remote_peering_connections` | `map(object)` | ❌ | RPCs to create on the DRG |
 | `drg_route_tables` | `map(object)` | ❌ | DRG route tables and route rules |
+| `drg_route_distributions` | `map(object)` | ❌ | DRG route distributions and optional statements |
 | `rpc_attachment_managements` | `map(object)` | ❌ | RPC attachment management objects used for DRG route-table association |
+| `default_route_table_managements` | `map(object)` | ❌ | Default VCN route table management resources and route rules |
 
 ### VCN attachment object schema
 
@@ -137,13 +142,31 @@ remote_peering_connections = map(object({
 
 ```hcl
 drg_route_tables = map(object({
-  display_name = optional(string)
+  display_name                      = optional(string)
+  import_drg_route_distribution_key = optional(string)
   route_rules = optional(list(object({
     destination                            = string
     destination_type                       = optional(string, "CIDR_BLOCK")
     next_hop_attachment_key                = optional(string)
     next_hop_rpc_attachment_management_key = optional(string)
     next_hop_drg_attachment_id             = optional(string)
+  })), [])
+}))
+```
+
+### DRG route distribution object schema
+
+```hcl
+drg_route_distributions = map(object({
+  distribution_type = string
+  display_name      = optional(string)
+  statements = optional(list(object({
+    action   = string
+    priority = number
+    match_criteria = optional(list(object({
+      match_type      = string
+      attachment_type = optional(string)
+    })), [])
   })), [])
 }))
 ```
@@ -159,6 +182,25 @@ rpc_attachment_managements = map(object({
 }))
 ```
 
+### Default route table management schema
+
+```hcl
+default_route_table_managements = map(object({
+  manage_default_resource_id = string
+  compartment_ocid           = optional(string)
+  display_name               = optional(string)
+  route_rules = optional(list(object({
+    description        = optional(string)
+    destination        = string
+    destination_type   = optional(string, "CIDR_BLOCK")
+    network_entity_id  = optional(string)
+    network_entity_key = optional(string)
+  })), [])
+}))
+```
+
+`network_entity_key = "drg"` resolves automatically to the DRG created by this module.
+
 ---
 
 ## 📤 Outputs
@@ -169,6 +211,7 @@ rpc_attachment_managements = map(object({
 | `drg_name` | DRG display name |
 | `drg_attachment_ids` | Map of VCN attachment keys to OCIDs |
 | `drg_route_table_ids` | Map of DRG route table keys to OCIDs |
+| `drg_route_distribution_ids` | Map of DRG route distribution keys to OCIDs |
 | `remote_peering_connection_ids` | Map of RPC keys to OCIDs |
 | `rpc_attachment_management_ids` | Map of RPC attachment management keys to OCIDs |
 
