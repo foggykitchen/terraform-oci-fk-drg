@@ -70,7 +70,7 @@ All examples are runnable and demonstrate how DRG-based connectivity composes wi
 
 ```hcl
 module "drg" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.3.0"
+  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.4.0"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-demo"
