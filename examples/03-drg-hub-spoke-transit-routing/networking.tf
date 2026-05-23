@@ -239,7 +239,7 @@ module "vcn_spoke2" {
 }
 
 module "drg_hub" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git?ref=v0.4.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.0"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-hub"

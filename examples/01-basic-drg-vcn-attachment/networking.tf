@@ -62,7 +62,7 @@ module "vcn" {
 }
 
 module "drg" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-drg.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg"
