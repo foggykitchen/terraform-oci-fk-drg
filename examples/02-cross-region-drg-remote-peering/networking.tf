@@ -1,5 +1,5 @@
 module "vcn_home" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-home-vcn"
@@ -132,7 +132,7 @@ module "drg_home" {
 }
 
 module "vcn_peer" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
 
   providers = {
     oci = oci.peer

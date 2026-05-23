@@ -1,5 +1,5 @@
 module "vcn_hub" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-vcn-hub"
@@ -79,7 +79,7 @@ module "vcn_hub" {
 }
 
 module "vcn_spoke1" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-vcn-spoke1"
@@ -159,7 +159,7 @@ module "vcn_spoke1" {
 }
 
 module "vcn_spoke2" {
-  source = "git::https://github.com/mlinxfeld/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-vcn-spoke2"

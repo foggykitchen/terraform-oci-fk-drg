@@ -68,8 +68,8 @@ tofu apply
 ## Related Resources
 
 - [FoggyKitchen OCI Dynamic Routing Gateway Module (terraform-oci-fk-drg)](../)
-- [FoggyKitchen OCI VCN Module (terraform-oci-fk-vcn)](https://github.com/mlinxfeld/terraform-oci-fk-vcn)
-- [FoggyKitchen OCI Compute Module (terraform-oci-fk-compute)](https://github.com/mlinxfeld/terraform-oci-fk-compute)
+- [FoggyKitchen OCI VCN Module (terraform-oci-fk-vcn)](https://github.com/foggykitchen/terraform-oci-fk-vcn)
+- [FoggyKitchen OCI Compute Module (terraform-oci-fk-compute)](https://github.com/foggykitchen/terraform-oci-fk-compute)
 - [FoggyKitchen OCI Local Peering Gateway Module (terraform-oci-fk-lpg)](https://github.com/mlinxfeld/terraform-oci-fk-lpg)
 
 ---
