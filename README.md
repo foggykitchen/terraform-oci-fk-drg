@@ -4,6 +4,8 @@ This repository contains a reusable **Terraform/OpenTofu module** and progressiv
 
 It is part of the **[FoggyKitchen.com training ecosystem](https://foggykitchen.com/courses-2/)** and serves as the strategic OCI connectivity building block for remote peering, transit routing, and more advanced network designs.
 
+Support expectations are documented in [SUPPORT.md](SUPPORT.md).
+
 ---
 
 ## 🎯 Purpose
