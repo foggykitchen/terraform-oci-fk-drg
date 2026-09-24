@@ -2,7 +2,7 @@
 
 This repository contains a reusable **Terraform/OpenTofu module** and progressive examples for deploying **Oracle Cloud Infrastructure (OCI) Dynamic Routing Gateways (DRGs)** and related connectivity primitives such as **VCN attachments**, **DRG route tables**, and **Remote Peering Connections (RPCs)**.
 
-It is part of the **[FoggyKitchen.com training ecosystem](https://foggykitchen.com/courses-2/)** and serves as the strategic OCI connectivity building block for remote peering, transit routing, and more advanced network designs.
+It is part of the **[FoggyKitchen.com training ecosystem](https://foggykitchen.com/)** and serves as the strategic OCI connectivity building block for remote peering, transit routing, and more advanced network designs.
 
 Support expectations are documented in [SUPPORT.md](SUPPORT.md).
 
