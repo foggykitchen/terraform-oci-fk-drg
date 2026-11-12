@@ -33,3 +33,4 @@ jobs:
       - run: tofu fmt -check
       - run: tofu init -backend=false -input=false
       - run: tofu validate
+      - run: tofu test
