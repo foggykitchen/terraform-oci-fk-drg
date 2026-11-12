@@ -1,5 +1,5 @@
 module "vcn_home" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0" # TODO: tag not yet released
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-home-vcn"
@@ -82,7 +82,7 @@ module "vcn_home" {
 }
 
 module "drg_home" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.0"
+  source = "../.."
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-home"
@@ -132,7 +132,7 @@ module "drg_home" {
 }
 
 module "vcn_peer" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0" # TODO: tag not yet released
 
   providers = {
     oci = oci.peer
@@ -219,7 +219,7 @@ module "vcn_peer" {
 }
 
 module "drg_peer" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.0"
+  source = "../.."
 
   providers = {
     oci = oci.peer
