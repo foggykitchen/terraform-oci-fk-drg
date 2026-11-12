@@ -1,5 +1,5 @@
 module "vcn_hub" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.2.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0" # TODO: tag not yet released
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-vcn-hub"
@@ -79,7 +79,7 @@ module "vcn_hub" {
 }
 
 module "vcn_spoke1" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.2.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0" # TODO: tag not yet released
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-vcn-spoke1"
@@ -159,7 +159,7 @@ module "vcn_spoke1" {
 }
 
 module "vcn_spoke2" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.2.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0" # TODO: tag not yet released
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-vcn-spoke2"
@@ -239,7 +239,7 @@ module "vcn_spoke2" {
 }
 
 module "drg_hub" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.0"
+  source = "../.."
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-hub"

@@ -76,7 +76,7 @@ All examples are runnable and demonstrate how DRG-based connectivity composes wi
 
 ```hcl
 module "drg" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.5.0"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-demo"
@@ -265,15 +265,6 @@ Visit [FoggyKitchen.com](https://foggykitchen.com/) for OCI, multicloud, and Ter
 
 ---
 
-## OCI provider compatibility
-
-Starting with **v0.4.1**, the root module accepts `oracle/oci >= 6.0.0, < 10.0.0`, including OCI 9.x while preserving the existing OCI 6.x lower bound. No module inputs, outputs or resource addresses change.
-
-The compatibility CI matrix pins **6.37.0** and **9.12.1**, using OpenTofu **1.11.6** for validation and mock-capable test execution. This module has no standalone mock suite; CI validates the root module on both provider versions. Cross-region composition was also exercised by BaseDB example 03. Local checks on **2026-11-12** passed formatting, initialization and validation on both provider versions. Other provider versions within the allowed range have not been individually verified.
-
-The same resource configuration was exercised with OCI **9.12.1** in the BaseDB cross-region lab on **2026-11-12**. Both regional RPCs reached PEERED, private listener connectivity passed in both directions, and the DRG/RPC resources were removed during cleanup. This verifies the lab's composition, not every optional module feature. The lab's BaseDB standby cleanup required an explicit target-region termination; this compatibility release does not change Data Guard lifecycle behavior.
-
-Existing callers can keep OCI 6.x. A consuming stack must allow the selected provider version in every module and review its plan before upgrading. Standalone examples may retain independent OCI 6.x constraints and pinned dependency tags.
 
 ---
 
@@ -286,8 +277,18 @@ See [LICENSE](LICENSE) for more details.
 
 © 2026 [FoggyKitchen.com](https://foggykitchen.com) - Cloud. Code. Clarity.
 
-## OCI provider compatibility
 
-The root module accepts `oracle/oci >= 6.0.0, < 10.0.0`. Compatibility checks on 2026-11-09 passed with **6.37.0** and **9.12.1**. The root module passed validation on each version; it has no standalone mock tests. Its cross-region composition passed the BaseDB example 03 mock tests with 9.12.1. The CI matrix checks both provider versions. Other versions within the allowed range have not been individually tested.
+## Requirements
 
-This broadens the provider constraint without changing resource addresses or inputs. Existing deployments can retain OCI 6.x; upgrading a consuming stack requires compatible constraints in every module and review of its plan. Example configurations may still pin OCI 6.x independently. These checks do not constitute a live deployment test of this module on OCI 9.x.
+| Requirement | Version |
+|---|---|
+| OpenTofu | >= 1.11.0 (tested with 1.11.6) |
+| oracle/oci | >= 9.12.1, < 10.0.0 |
+
+## BREAKING: requires OCI provider >= 9.12.1
+
+OCI provider 6.x, 7.x and 8.x are no longer supported. Upgrade all composed modules together, run `tofu init -upgrade`, and review a plan before applying. Existing module inputs, outputs and resource addresses are preserved.
+
+Every embedded example is covered by a plan-only mocked test. CI uses OpenTofu 1.11.6 and exact OCI 9.12.1. Mocked plans verify configuration and expressions; they do not verify tenancy permissions, regional availability or service limits.
+
+Run the same checks locally with `python3 scripts/oci9_check.py --root .` (or an example path). The helper materializes synthetic IDs in a temporary copy. For unpublished integration branches only, `OCI9_ALLOW_UNRELEASED=1` permits an explicitly logged fallback from the proposed tag to `oci-provider-9`; released tags always take precedence. `--modules-dir /path/to/checkouts` tests local migrated dependencies.
