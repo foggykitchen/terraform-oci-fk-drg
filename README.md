@@ -76,7 +76,7 @@ All examples are runnable and demonstrate how DRG-based connectivity composes wi
 
 ```hcl
 module "drg" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.4.1"
 
   compartment_ocid = var.compartment_ocid
   name             = "fk-drg-demo"
@@ -262,6 +262,18 @@ This makes the module useful for:
 ## 🌐 Learn More
 
 Visit [FoggyKitchen.com](https://foggykitchen.com/) for OCI, multicloud, and Terraform/OpenTofu learning resources.
+
+---
+
+## OCI provider compatibility
+
+Starting with **v0.4.1**, the root module accepts `oracle/oci >= 6.0.0, < 10.0.0`, including OCI 9.x while preserving the existing OCI 6.x lower bound. No module inputs, outputs or resource addresses change.
+
+The compatibility CI matrix pins **6.37.0** and **9.12.1**, using OpenTofu **1.11.6** for validation and mock-capable test execution. This module has no standalone mock suite; CI validates the root module on both provider versions. Cross-region composition was also exercised by BaseDB example 03. Local checks on **2026-11-12** passed formatting, initialization and validation on both provider versions. Other provider versions within the allowed range have not been individually verified.
+
+The same resource configuration was exercised with OCI **9.12.1** in the BaseDB cross-region lab on **2026-11-12**. Both regional RPCs reached PEERED, private listener connectivity passed in both directions, and the DRG/RPC resources were removed during cleanup. This verifies the lab's composition, not every optional module feature. The lab's BaseDB standby cleanup required an explicit target-region termination; this compatibility release does not change Data Guard lifecycle behavior.
+
+Existing callers can keep OCI 6.x. A consuming stack must allow the selected provider version in every module and review its plan before upgrading. Standalone examples may retain independent OCI 6.x constraints and pinned dependency tags.
 
 ---
 
